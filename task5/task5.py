@@ -113,3 +113,26 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'val'], loc='upper left')
 plt.show()
+
+import random
+from keras.utils import load_img, img_to_array
+import numpy as np
+
+for i in range(5):
+
+    dogs = os.path.join(task4+'/dogs', random.choice(os.listdir(task4+'/dogs')))
+    cats = open(os.path.join(task4+'/cats', random.choice(os.listdir(task4+'/cats'))))
+
+    img_dog = load_img(dogs, target_size=(64, 64))
+    img_cat = load_img(cats, target_size=(64, 64))
+
+    p_image_dog = keras.applications.mobilenet.preprocess_input(np.expand_dims(img_to_array(img_dog), axis=0))
+    p_image_cat = keras.applications.mobilenet.preprocess_input(np.expand_dims(img_to_array(img_cat), axis=0))
+
+    results_dog = model.predict(p_image_dog)
+    
+
+    print(f"res: {np.round(results[0][0], 3)}")
+    plt.imshow(img)
+    plt.title(f"Predicted: {'Cat' if results[0][0] < 0.5 else 'Dog'} | True: dog")
+    plt.show()
